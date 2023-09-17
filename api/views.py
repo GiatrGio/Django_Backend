@@ -31,6 +31,7 @@ class LoadEfoTermsView(APIView):
 
         try:
             services.load_efo_terms_from_external_api()
+            return Response(status=status.HTTP_201_CREATED)
         except ValueError as e:
             logging.error(f'Failed parsing JSON data from the API response: {str(e)}')
             return Response({'message': 'Failed parsing JSON data from the API response'},
