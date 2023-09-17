@@ -1,11 +1,8 @@
 import requests
 import logging
 
-from django.db import DatabaseError
-from rest_framework.response import Response
 from api.models import EfoTerm, EfoTermSynonym, EfoTermOntology
 from django.conf import settings
-from rest_framework import status
 
 
 class Services:
@@ -19,31 +16,12 @@ class Services:
     PARENT_TERMS_STRING = 'parents'
 
     def load_efo_terms_from_external_api(self):
+        logging.info('-----Start adding EFO terms to the database-----')
+
         api_response = requests.get(settings.LOAD_EFO_DATA_URL)
+        self.recursively_add_efo_terms_to_database(api_response.json())
 
-        if api_response.status_code != 200:
-            logging.error('Failed to access the external API')
-            return Response({'message': 'Failed to access the external API'},
-                            status=status.HTTP_400_BAD_REQUEST)
-
-        try:
-            logging.info('-----Start adding EFO terms to the database-----')
-            self.recursively_add_efo_terms_to_database(api_response.json())
-            logging.info('-----Successfully added EFO terms to the database-----')
-            return Response({'message': 'Successfully added EFO terms to the database'},
-                            status=status.HTTP_200_OK)
-        except ValueError as e:
-            logging.error(f'Failed parsing JSON data from the API response: {str(e)}')
-            return Response({'message': 'Failed parsing JSON data from the API response'},
-                            status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-        except DatabaseError as e:
-            logging.error(f'Failed to add EFO terms due to a database error: {str(e)}')
-            return Response({'message': 'Failed to add EFO terms due to a database error'},
-                            status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-        except Exception as e:
-            logging.error(f'Failed to add EFO terms due to unexpected error: {str(e)}')
-            return Response({'message': 'Failed to add EFO terms due to unexpected error'},
-                            status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        logging.info('-----Successfully added EFO terms to the database-----')
 
     def recursively_add_efo_terms_to_database(self, terms_json_response, child_term_object=None):
         for term_json in terms_json_response[self.EMBEDDED_STRING][self.TERMS_STRING]:
