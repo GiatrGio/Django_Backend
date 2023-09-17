@@ -1,3 +1,4 @@
+from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from api.models import EfoTerm, EfoTermSynonym, EfoTermOntology
@@ -26,4 +27,8 @@ class LoadEfoTermsView(APIView):
         services = Services()
 
         return services.load_efo_terms_from_external_api()
+
+    def get(self, request):
+        return Response({"message": "This endpoint only accepts POST requests."},
+                        status=status.HTTP_405_METHOD_NOT_ALLOWED)
 

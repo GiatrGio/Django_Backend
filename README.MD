@@ -10,8 +10,8 @@ Create a back-end infrastructure that stores and exposes specific data provided 
   - [Installation](#installation)
   - [Configuration](#configuration)
 - [Usage](#usage)
+  - [Load EFO terms from OLS url to the local database](#load-efo-terms-from-ols-url-to-the-local-database)
   - [Endpoints](#endpoints)
-  - [Examples](#examples)
 - [Testing](#testing)
     - [Unit Tests](#unit-tests)
     - [Integration Tests](#integration-tests)
@@ -29,6 +29,7 @@ Following technologies should be installed locally before you can use your proje
 
 - Python 3.x
 - Docker
+- pip3
 
 ### Installation
 
@@ -48,13 +49,13 @@ git clone https://github.com/GiatrGio/Django_Backend.git
 cd Django_Backend
 
 # Install dependencies
-pip install -r requirements.txt
+pip3 install -r requirements.txt
 
 # Run migrations
-python manage.py migrate
+python3 manage.py migrate
 
 # Start the development server
-python manage.py runserver
+python3 manage.py runserver
 ```
 
 ### Configuration
@@ -64,6 +65,13 @@ Pagination is configured in the settings.py file. You can change the default pag
 
 
 ## Usage
+
+### Load EFO terms from OLS url to the local database
+
+Before you can use the API, you need to load the EFO terms from the OLS url to the local database. 
+You can do that by sending a POST request to the load-efo-terms endpoint. 
+(http://localhost:8000/api/load-efo-terms/)
+(See Endpoints section for more details)
 
 ### Endpoints
 
@@ -97,7 +105,7 @@ The API exposes the following endpoints:
 
 
 - Load EFO terms from OLS url to the local database: Access it at http://localhost:8000/api/load-efo-terms/ 
-- - POST http://localhost:8000/api/load-efo-terms/ (You can change the default OLS url from the LOAD_EFO_DATA_URL parameter in the settings.py file)
+- - POST http://localhost:8000/api/load-efo-terms/ (You can also change the default OLS url from the LOAD_EFO_DATA_URL parameter in the settings.py file)
 
 
 ## Testing

@@ -9,5 +9,5 @@ router.register(r'efo-term-ontology', views.EfoTermOntologyViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),
-    path('load-efo-terms/', views.LoadEfoTermsView.as_view()),
+    path('load-efo-terms/', views.LoadEfoTermsView.as_view(), name='load-efo-terms'),
 ]

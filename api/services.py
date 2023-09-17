@@ -27,9 +27,9 @@ class Services:
                             status=status.HTTP_400_BAD_REQUEST)
 
         try:
-            logging.info('Start adding EFO terms to the database')
+            logging.info('-----Start adding EFO terms to the database-----')
             self.recursively_add_efo_terms_to_database(api_response.json())
-            logging.info('Successfully added EFO terms to the database')
+            logging.info('-----Successfully added EFO terms to the database-----')
             return Response({'message': 'Successfully added EFO terms to the database'},
                             status=status.HTTP_200_OK)
         except ValueError as e:
